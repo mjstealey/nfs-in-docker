@@ -57,10 +57,11 @@ docker volume create \
 
 Verify creation of volume:
 
-```
+```console
+$ docker volume inspect nfs
 [
     {
-        "CreatedAt": "2018-05-18T12:19:20-04:00",
+        "CreatedAt": "2018-05-18T13:37:27-04:00",
         "Driver": "local",
         "Labels": {},
         "Mountpoint": "/var/lib/docker/volumes/nfs/_data",
@@ -170,11 +171,11 @@ Export list for server:
 /nfs/home        *
 /nfs/secret      *
 $ docker exec client cat /etc/fstab
-### <server>:</remote/export></local/directory><nfs-type><options> 0 0
-server:/nfs/secret /secret nfs rw 0 0
-server:/nfs/home /home nfs rw 0 0
-server:/nfs/modules /opt/apps/Linux nfs rw 0 0
-server:/nfs/modulefiles /opt/apps/modulefiles/Linux nfs rw 0 0
+### <server>:</remote/export> </local/directory> <nfs-type> <options> 0 0
+server:/nfs/secret /secret nfs rw,hard,intr 0 0
+server:/nfs/home /home nfs rw,hard,intr 0 0
+server:/nfs/modules /opt/apps/Linux nfs rw,hard,intr 0 0
+server:/nfs/modulefiles /opt/apps/modulefiles/Linux nfs rw,hard,intr 0 0
 ```
 
 The directories should all initially be empty (example using Linux volume mount).
@@ -205,8 +206,9 @@ total 0
 
 A script named [nfs-test.sh](nfs-test.sh) has been provided to test the NFS mounts.
 
+Run `$ ./nfs-test.sh`, the following output should be observed:
+
 ```console
-$ ./nfs-test.sh
 ### NFS test ###
 
 ### write on server ###
@@ -232,10 +234,10 @@ total 0
 ### write on client ###
 $ touch /home/client-touch-home
 $ touch /secret/client-touch-secret
-$ client touch /opt/apps/Linux/client-touch-modules
+$ touch /opt/apps/Linux/client-touch-modules
 $ touch /opt/apps/modulefiles/Linux/client-touch-modulefiles
 
-### read from client ###
+### read from server ###
 $ ls -l /nfs/home
 total 0
 -rw-r--r-- 1 root root 0 May 18 17:45 client-touch-home
