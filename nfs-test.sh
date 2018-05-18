@@ -29,13 +29,13 @@ echo "$ touch /home/client-touch-home"
 docker exec client touch /home/client-touch-home
 echo "$ touch /secret/client-touch-secret"
 docker exec client touch /secret/client-touch-secret
-echo "$ client touch /opt/apps/Linux/client-touch-modules"
+echo "$ touch /opt/apps/Linux/client-touch-modules"
 docker exec client touch /opt/apps/Linux/client-touch-modules
 echo "$ touch /opt/apps/modulefiles/Linux/client-touch-modulefiles"
 docker exec client touch /opt/apps/modulefiles/Linux/client-touch-modulefiles
 
 # read content from server
-echo; echo "### read from client ###"
+echo; echo "### read from server ###"
 echo "$ ls -l /nfs/home"
 docker exec server ls -l /nfs/home
 echo "$ ls -l /nfs/secret"
