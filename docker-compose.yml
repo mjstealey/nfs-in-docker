@@ -1,0 +1,39 @@
+version: '3.0'
+services:
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: server
+    container_name: server
+    privileged: true
+    hostname: server.nfs.local
+    networks:
+      - nfs
+    environment:
+      NFS_SERVER_DIRS: '/nfs/secret:/nfs/home:/nfs/modules:/nfs/modulefiles'
+    volumes:
+      - nfs:/nfs
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: client
+    container_name: client
+    privileged: true
+    hostname: client.nfs.local
+    networks:
+      - nfs
+    environment:
+      NFS_SERVER: server
+      NFS_SERVER_DIRS: '/nfs/secret:/nfs/home:/nfs/modules:/nfs/modulefiles'
+      NFS_CLIENT_DIRS: '/secret:/home:/opt/apps/Linux:/opt/apps/modulefiles/Linux'
+
+networks:
+  nfs:
+
+volumes:
+  nfs:
+    external: true
